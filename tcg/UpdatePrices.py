@@ -4,6 +4,7 @@ from peewee import SqliteDatabase
 import requests
 import json
 from models.models import Sku, SkuPrice
+requests.packages.urllib3.disable_warnings() 
 
 
 db = SqliteDatabase('collection.db')
@@ -19,8 +20,12 @@ headers = {"Accept": "application/json", "Authorization": "bearer a4ZIrg9dK5xYYa
 for sku in SkuPrice.select():
     response = requests.get(BASE_URL.replace('%s',SKU_PRICE_URL.replace('SKU_ID', str(sku.skuId))), headers=headers, verify=False)
     price = response.json()['results']
-    price.pop('lowestShipping', None)
-    price.pop('lowestListingPrice', None)
-    price.pop('directLowPrice', None)
+    price[0].pop('lowestShipping', None)
+    price[0].pop('lowestListingPrice', None)
+    price[0].pop('directLowPrice', None)
+    print("sku: " + str(sku.skuId) + " --- old price: " + str(sku.marketPrice) + " --> " + str(price[0]['marketPrice']))
 
-    SkuPrice.update({SkuPrice.lowPrice:price['lowPrice']}).update({SkuPrice.marketPrice:price['marketPrice']}).where(SkuPrice.skuId==price['skuId'])
+    SkuPrice.update({SkuPrice.lowPrice:price[0]['lowPrice']}).where(SkuPrice.skuId==price[0]['skuId'])
+    SkuPrice.update({SkuPrice.marketPrice:price[0]['marketPrice']}).where(SkuPrice.skuId==price[0]['skuId'])
+
+print("_____________________________ DONE _____________________________")
