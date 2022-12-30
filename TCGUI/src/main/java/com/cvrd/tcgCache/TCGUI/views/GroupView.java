@@ -26,6 +26,13 @@ public class GroupView extends AppLayout implements BeforeEnterObserver {
     public GroupView(DatabaseService dbService) {
         this.dbService = dbService;
 
+
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        this.categoryId = Integer.parseInt(event.getRouteParameters().get("categoryId").get());
+
         List<Group> groups = dbService.groupService().conditionalGet(String.format("WHERE categoryId=%s",categoryId));
 
         VirtualList<Group> groupVirtualList = new VirtualList<>();
@@ -37,14 +44,6 @@ public class GroupView extends AppLayout implements BeforeEnterObserver {
                         ui.navigate(String.format("groups/%s", clickedItem.categoryId()));
                     });
                 }));
-        setContent(categoryVirtualList);
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        this.categoryId = Integer.parseInt(event.getRouteParameters().get("categoryId").get());
-
-
-        setContent(new H1("sup dawg" + categoryId));
+        setContent(groupVirtualList);
     }
 }
