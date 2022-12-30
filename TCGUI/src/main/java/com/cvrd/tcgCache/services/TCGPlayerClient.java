@@ -43,76 +43,84 @@ public class TCGPlayerClient {
     private static final String AUTHORIZATION_VALUE = "bearer %s";
 
 
+    //TODO: add logic to get the language and skuprice
+
     public List<Category> getCategories() throws JSONException, IOException {
         List<String> items = pagedSearch(CATEGORY_URL);
         List<Category> returnList = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Category>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Category>>() {
+            }));
         }
         return returnList;
     }
 
-    public List<Condition> getConditions(int[] conditionIds) throws JSONException, IOException {
+    public List<Condition> getConditions(List<Integer> categoryIds) throws JSONException, IOException {
         List<Condition> returnList = new ArrayList<>();
         List<String> items = new ArrayList<>();
-        for (int i = 0; i < conditionIds.length; i++) {
-            items.add(singleSearch(String.format(CONDITION_URL, conditionIds[i], "%s")));
+        for (int categoryId : categoryIds) {
+            items.add(singleSearch(String.format(CONDITION_URL, categoryId, "%s")));
         }
 
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Condition>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Condition>>() {
+            }));
         }
         return returnList.stream().distinct().collect(Collectors.toList());
     }
 
-    public List<Group> getGroups(int[] categoryIds) throws JSONException, IOException {
+    public List<Group> getGroups(List<Integer> categoryIds) throws JSONException, IOException {
         List<Group> returnList = new ArrayList<>();
         List<String> items = new ArrayList<>();
-        for (int i = 0; i < categoryIds.length; i++) {
-            items.addAll(pagedSearch(String.format(GROUP_URL, categoryIds[i], "%s")));
+        for (Integer categoryId : categoryIds) {
+            items.addAll(pagedSearch(String.format(GROUP_URL, categoryId, "%s")));
         }
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Group>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Group>>() {
+            }));
         }
         return returnList;
     }
 
-    public List<Product> getCardProducts(int[] groupIds) throws JSONException, IOException {
+    public List<Product> getCardProducts(List<Integer> groupIds) throws JSONException, IOException {
         List<Product> returnList = new ArrayList<>();
         List<String> items = new ArrayList<>();
-        for (int i = 0; i < groupIds.length; i++) {
-            items.addAll(pagedSearch(String.format(PRODUCT_URL, groupIds[i], "%s")));
+        for (int groupId : groupIds) {
+            items.addAll(pagedSearch(String.format(PRODUCT_URL, groupId, "%s")));
         }
 
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Product>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Product>>() {
+            }));
         }
         return returnList;
     }
 
-    public List<Sku> getSkus(int[] productIds) throws JSONException, IOException {
+    public List<Sku> getSkus(List<Integer> productIds) throws JSONException, IOException {
         List<Sku> returnList = new ArrayList<>();
         List<String> items = new ArrayList<>();
-        for (int i = 0; i < productIds.length; i++) {
-            items.add(singleSearch(String.format(SKU_URL, productIds[i], "%s")));
+        for (int productId : productIds) {
+            items.add(singleSearch(String.format(SKU_URL, productId, "%s")));
         }
 
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Sku>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Sku>>() {
+            }));
         }
         return returnList;
     }
 
-    public List<Print> getPrints(int[] categoryIds) throws JSONException, IOException {
+    public List<Print> getPrints(List<Integer> categoryIds) throws JSONException, IOException {
         List<Print> returnList = new ArrayList<>();
         List<String> items = new ArrayList<>();
 
-        for (int i = 0; i < categoryIds.length; i++) {
-            items.add(singleSearch(String.format(PRINTING_URL, categoryIds[i], "%s")));
+        for (int categoryId : categoryIds) {
+            items.add(singleSearch(String.format(PRINTING_URL, categoryId, "%s")));
         }
 
-        for(int i = 0; i < items.size(); i++) {
-            returnList.addAll(mapper.readValue(items.get(i), new TypeReference<List<Print>>(){}));
+        for (String item : items) {
+            returnList.addAll(mapper.readValue(item, new TypeReference<List<Print>>() {
+            }));
         }
         return returnList;
     }

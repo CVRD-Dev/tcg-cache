@@ -1,0 +1,1 @@
+curl --include --request POST --header "application/x-www-form-urlencoded" --data-binary "grant_type=client_credentials&client_id=2d17223b-711e-47fd-8b38-2ca4a8dd2d14&client_secret=6127235d-0169-43f6-a896-40ad39513ae5" "https://api.tcgplayer.com/token"
