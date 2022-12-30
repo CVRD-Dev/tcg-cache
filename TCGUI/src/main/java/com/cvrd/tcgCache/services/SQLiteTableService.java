@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -81,15 +82,41 @@ public class SQLiteTableService<T> implements TableService<T> {
     }
 
     @Override
-    public void addItems(List<T> items, RecordComponent[] recordComponents) {
-        String sql = "BEGIN TRANSACTION;\n";
-        String insert_stmt = "INSERT INTO %s table VALUES (";
-        for(int i=0;i<items.size();i++) {
-            sql = sql + String.format(insert_stmt, tableName);
-            //TODO add to the sql statement based on the column type
-
-        }
+    public List<T> conditionalGet(String conditionalSql) {
+        StringBuilder sql = new StringBuilder(String.format("SELECT * FROM %s", tableName));
+        sql.append(" ").append(conditionalSql);
+        return jdbcTemplate.query(sql.toString(),rowMapper);
     }
+
+    @Override
+    public void addItems(List<T> items, RecordComponent[] recordComponents) throws InvocationTargetException, IllegalAccessException {
+        StringBuilder sql = new StringBuilder("BEGIN TRANSACTION;\n");
+        for (T item : items) {
+            StringBuilder insertStmt = new StringBuilder(String.format("INSERT INTO %s VALUES(",tableName));
+            //TODO add to the sql statement based on the column type
+            for (int i=0;i<recordComponents.length;i++) {
+                insertStmt.append("'");
+                insertStmt.append(recordComponents[i].getAccessor().invoke(item).toString());
+                insertStmt.append("'");
+                if (i+1 != recordComponents.length) {
+                    insertStmt.append(",");
+                }
+            }
+            insertStmt.append(");\n");
+            sql.append(insertStmt);
+        }
+        sql.append("END TRANSACTION;");
+        System.out.println(sql.toString());
+        int updatedRows = jdbcTemplate.update(sql.toString());
+        System.out.println(updatedRows);
+    }
+
+    @Override
+    public void updateItem(T item) {
+
+    }
+
+
 
     private String generateCreateTableStatement() {
         String sql = String.format(createTable, tableName);

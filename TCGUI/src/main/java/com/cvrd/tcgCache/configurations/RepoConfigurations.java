@@ -21,7 +21,7 @@ public class RepoConfigurations {
         columns.add(new Triplet<>("categoryId", "integer", "PRIMARY KEY"));
         columns.add(new Triplet<>("name", "text", ""));
         columns.add(new Triplet<>("displayName", "text", ""));
-        columns.add(new Triplet<>("tracked", "boolean", ""));
+        columns.add(new Triplet<>("collecting", "boolean", ""));
         return new SQLiteTableService<>("Categories",columns,"categoryId");
     }
 

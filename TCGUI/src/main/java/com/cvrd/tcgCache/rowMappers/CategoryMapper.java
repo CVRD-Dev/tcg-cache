@@ -16,7 +16,7 @@ public class CategoryMapper implements RowMapper<Category> {
                 rs.getInt("categoryId"),
                 rs.getString("name"),
                 rs.getString("displayName"),
-                rs.getBoolean("tracked")
+                rs.getInt("collecting")
         );
     }
 }

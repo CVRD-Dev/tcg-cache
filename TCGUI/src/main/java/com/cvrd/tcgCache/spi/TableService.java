@@ -1,5 +1,7 @@
 package com.cvrd.tcgCache.spi;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.RecordComponent;
 import java.util.List;
 
 public interface TableService<T> {
@@ -10,5 +12,9 @@ public interface TableService<T> {
     List<T> getAll();
     T get(int id);
 
-    void addItems(List<T> items);
+    void addItems(List<T> items, RecordComponent[] recordComponents) throws InvocationTargetException, IllegalAccessException;
+
+    void updateItem(T item);
+
+    List<T> conditionalGet(String conditionalSql);
 }

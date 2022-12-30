@@ -15,7 +15,7 @@
 	<description>UI for interacting with local DB</description>
 	<properties>
 		<java.version>17</java.version>
-		<vaadin.version>23.2.5</vaadin.version>
+		<vaadin.version>23.3.2</vaadin.version>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
