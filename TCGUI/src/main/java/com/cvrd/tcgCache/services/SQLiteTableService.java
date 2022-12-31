@@ -1,7 +1,11 @@
 package com.cvrd.tcgCache.services;
 
+import com.cvrd.tcgCache.TCGUI.views.LoadingView;
 import com.cvrd.tcgCache.rowMappers.CategoryMapper;
 import com.cvrd.tcgCache.spi.TableService;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +21,7 @@ import java.sql.Statement;
 import java.util.List;
 
 
-public class SQLiteTableService<T> implements TableService<T> {
+public class SQLiteTableService<T> extends Thread implements TableService<T> {
 
     protected String tableName = "NONE";
     protected String createTable = "CREATE TABLE IF NOT EXISTS %s";
@@ -32,7 +36,11 @@ public class SQLiteTableService<T> implements TableService<T> {
     @Autowired
     private RowMapper<T> rowMapper;
 
-    private String idColumn;
+    private final String idColumn;
+
+    //used to update UI progress bar
+    private UI ui;
+    private LoadingView view;
 
     public SQLiteTableService(String tableName, List<Triplet<String,String,String>> columns, String idColumn) {
         this.tableName = tableName;
@@ -131,5 +139,10 @@ public class SQLiteTableService<T> implements TableService<T> {
         }
         sql = sql + ");";
         return sql;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

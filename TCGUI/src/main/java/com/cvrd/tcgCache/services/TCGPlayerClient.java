@@ -1,10 +1,12 @@
 package com.cvrd.tcgCache.services;
 
+import com.cvrd.tcgCache.TCGUI.views.LoadingView;
 import com.cvrd.tcgCache.records.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.*;
+import com.vaadin.flow.component.UI;
 import okio.BufferedSink;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +44,9 @@ public class TCGPlayerClient {
     private static final String AUTHORIZATION = "Authorization";
     private static final String AUTHORIZATION_VALUE = "bearer %s";
 
+    //used to update UI progress bar
+    private UI ui;
+    private LoadingView view;
 
     //TODO: add logic to get the language and skuprice
 
@@ -167,5 +172,9 @@ public class TCGPlayerClient {
             }
         }
         return returnList;
+    }
+
+    public attachUI(UI ui, LoadingView view) {
+        
     }
 }
