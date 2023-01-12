@@ -10,6 +10,8 @@ public interface DatabaseService {
     void createDb();
     boolean doesDBExist();
 
+    boolean areTablesEmpty();
+
     TableService<Category> categoryService();
     TableService<Condition> conditionService();
     TableService<Group> groupService();

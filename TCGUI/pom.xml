@@ -18,6 +18,17 @@
 		<vaadin.version>23.3.2</vaadin.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.11</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
 		<dependency>
 			<groupId>org.javatuples</groupId>

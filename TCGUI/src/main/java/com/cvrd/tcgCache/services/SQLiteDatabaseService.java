@@ -104,4 +104,16 @@ public class SQLiteDatabaseService implements DatabaseService {
     public TCGPlayerClient tcgPlayerClient() {
         return this.tcgPlayerClient;
     }
+    
+    @Override
+    public boolean areTablesEmpty() {
+        boolean empty = true;
+
+        if(!(conditionService.isTableEmpty() && groupService.isTableEmpty() &&
+            languageService.isTableEmpty() && printService.isTableEmpty() && productService.isTableEmpty() &&
+            skuService.isTableEmpty() && skuPriceService.isTableEmpty())) {
+            empty = false;
+        }
+        return empty;
+    }
 }
